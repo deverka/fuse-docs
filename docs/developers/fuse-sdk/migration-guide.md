@@ -30,7 +30,7 @@ The following fields were removed and do not exist in the smart wallet schema:
 
 ## Migration
 
-If you have an app that uses Charge Wallets SDK and you would like to migrate to the new Smart Wallets SDK and allow your users to access their existing wallets, all you have to do is to get your users to recover their wallets by importing their credentials they had in the old version to the new version.&#x20;
+If you have an app that uses Charge Wallets SDK and you would like to migrate to the new Smart Wallets SDK and allow your users to access their existing wallets, all you have to do is to get your users to recover their wallets by importing their credentials they had in the old version to the new version.
 
 The Smart Wallet SDK will return the same wallet as before with the recovered credentials.
 

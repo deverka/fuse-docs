@@ -41,7 +41,7 @@ Fuse Notifications works by using webhooks, a way to subscribe to events on your
 
 Webhooks allow users to receive notifications when an event occurs on your application. Rather than continuously polling the server to check if the state has changed, webhooks provide information to you as it becomes available, which is more efficient and beneficial for developers. Webhooks work by registering a URL to send notifications to once certain events occur.
 
-Webhooks are typically used to connect two different applications. One application is the "sender" (in our case, Fuse), which listens to events on the blockchain and sends them off to the second "receiver" application (in our case, your dapp), which takes actions based upon that received data.&#x20;
+Webhooks are typically used to connect two different applications. One application is the "sender" (in our case, Fuse), which listens to events on the blockchain and sends them off to the second "receiver" application (in our case, your dapp), which takes actions based upon that received data.
 
 When an event occurs on the blockchain, the sender application sends that data to the webhook URL of the receiver application. The receiver application can then send a callback message with an HTTP status code to let the sender know whether the data was received successfully or not.
 
@@ -197,7 +197,7 @@ After you have a webhook address (either in your app, or in webhook.site or simi
 
 Create a webhook with [Create Webhook API](https://api-docs.fuse.io/v1.15/reference/post\_notifications-webhook)
 
-> #### 📘You can find your `projectId` in the URL of your project page
+> **📘You can find your `projectId` in the URL of your project page**
 >
 > Note that you will need to have an active Fuse account and a project with Public and Secret API keys before getting started. Please refer to [Getting Started](../fuse-sdk/getting-started.md) before the next steps.
 
@@ -205,7 +205,7 @@ Create a webhook with [Create Webhook API](https://api-docs.fuse.io/v1.15/refere
 
 Add addresses to listen to with [Add Webhook Addresses API](https://api-docs.fuse.io/v1.15/reference/post\_notifications-webhook-add-addresses)
 
-> #### 📘
+> **📘**
 >
 > If you don't remember your `webhookId`, you can always fetch all your webhooks with [Get Webhooks for Project](https://api-docs.fuse.io/v1.15/reference/get\_notifications-webhooks-projectid)
 
@@ -217,7 +217,7 @@ That's it! 😊 Check your webhook URL for events fired for the addresses you ad
 
 You can always edit or delete your webhook, add or remove addresses, and change your URL with the following endpoints:
 
-> #### 📘Webhook Address Types
+> **📘Webhook Address Types**
 >
 > Addresses that you add to webhooks, can be either wallet or token addresses. In all webhook event objects you will see the `addressType` key with the value `Wallet` for wallet addresses or `Token` for token addresses that you subscribed to.
 >
@@ -231,4 +231,4 @@ You can always edit or delete your webhook, add or remove addresses, and change 
 
 You can find all the available endpoints in [Webhooks API Reference](https://api-docs.fuse.io/v1.15/reference/webhooks).
 
-\
+\\

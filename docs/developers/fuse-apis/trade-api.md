@@ -22,7 +22,7 @@ Before working with Trade API, if you haven't done so, please follow the guide [
 
 #### Ready to start!
 
-> #### 📘Remember
+> **📘Remember**
 >
 > For all Trade API requests, you will need to add your Public API Key to the request query params under the key `apiKey`.
 

@@ -1,6 +1,6 @@
 # Architecture
 
-<figure><img src="../../.gitbook/assets/123.png" alt=""/><figcaption></figcaption></figure>
+![](../../.gitbook/assets/123.png)
 
 The Fuse Stack is comprised of several essential components, including:
 
@@ -21,4 +21,3 @@ The Fuse Stack is comprised of several essential components, including:
 * Other smart contracts include AMMs of DEXes, DAO contracts, and more.
 
 These components comprise the robust and comprehensive Fuse Stack, providing a powerful toolkit for building and deploying blockchain-based applications on the Fuse Network.
-

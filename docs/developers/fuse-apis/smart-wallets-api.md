@@ -1,6 +1,6 @@
 # Smart Wallets API
 
-Smart Wallets API provides a Wallets as a Service (WaaS) API for your cross-platform applications. As a developer, you can access the Smart Wallets API via the [fuse-sdk](../fuse-sdk/ "mention") or refer to the [Smart Wallets API reference](https://api-docs.fuse.io/reference/post\_api-v1-smart-wallets-auth) directly.&#x20;
+Smart Wallets API provides a Wallets as a Service (WaaS) API for your cross-platform applications. As a developer, you can access the Smart Wallets API via the [fuse-sdk](../fuse-sdk/ "mention") or refer to the [Smart Wallets API reference](https://api-docs.fuse.io/reference/post\_api-v1-smart-wallets-auth) directly.
 
 Smart Wallets API lets you authenticate users with their Externally Owned Accounts (EOAs) and create Smart Contract wallets, execute gasless transactions through the relay service, fetch balances and tokens, get transaction history, and much more.
 
@@ -12,7 +12,7 @@ Before working with Smart Wallets API, if you haven't done so, please follow the
 
 #### Ready to start!
 
-> #### 📘Remember
+> **📘Remember**
 >
 > For all Smart Wallets API requests, you will need to add your Public API Key to the request query params under the key `apiKey`.
 

@@ -25,25 +25,36 @@ if (result.hasError) {
 To create a new Fuse Smart Wallet, you can use the **`createWallet`** method. Before calling the method, you can subscribe to any of the events as shown below:
 
 ```dart
-// Create Wallet subscriptions
-fuseWalletSDK.on('smartWalletCreationStarted', (eventData) {
-  print('Started ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionHash', (eventData) {
-  print('tx hash ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('smartWalletCreationSucceeded', (eventData) {
-  print('Succeeded ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('smartWalletCreationFailed', (eventData) {
-  print('Failed ${eventData.toString()}');
-});
-
 // Create Wallet
-await fuseWalletSDK.createWallet();
+final exceptionOrStream = await fuseWalletSDK.createWallet();
+
+if (exceptionOrStream.hasError) {
+  print(exceptionOrStream.error.toString());
+} else if (exceptionOrStream.hasData) {
+  final smartWalletEventStream = exceptionOrStream.data!;
+  smartWalletEventStream.listen(
+    (SmartWalletEvent event) {
+      switch (event.name) {
+        case "smartWalletCreationStarted":
+          print('smartWalletCreationStarted ${event.data.toString()}');
+          break;
+        case "transactionHash":
+          print('transactionHash ${event.data.toString()}');
+          break;
+	case "smartWalletCreationSucceeded":
+	  print('smartWalletCreationSucceeded ${event.data.toString()}');
+	  break;
+        case "smartWalletCreationFailed":
+	  print('smartWalletCreationFailed ${event.data.toString()}');
+          break;
+      }
+   },
+    onError: (error) {
+      print('Error occurred: ${error.toString()}');
+      exit(1);
+    },
+  );
+}
 ```
 
 ### **Retrieving an existing Smart Wallet**
@@ -55,24 +66,25 @@ To retrieve an existing Fuse Smart Wallet, you can use the **`retrieveWallet`** 
 final walletData = await fuseWalletSDK.fetchWallet();
 
 walletData.pick(
-	onData: (SmartWallet smartWallet) async {
+  onData: (SmartWallet smartWallet) async {
     print('Smart wallet address ${smartWallet.smartWalletAddress}');
   },
   onError: (Exception exception) async {
-		print('Fetching wallet failed.');
-	}
+    print('Fetching wallet failed.');
+  }
 )
 ```
 
 ### Fetch or Create a Smart Wallet
 
-Since each externally owned account (EOA) can only have one associated Fuse Smart Wallet, attempting to create a new smart wallet for a user that already has one will result in an error.&#x20;
+Since each externally owned account (EOA) can only have one associated Fuse Smart Wallet, attempting to create a new smart wallet for a user that already has one will result in an error.
 
 For this reason, we suggest using the following code example to either fetch an existing wallet for the authenticated user if one exists or to create a new one if it does not.
 
 ```dart
 // Try to fetch a wallet for the EOA, if it doesn't exist create one
 final walletData = await fuseWalletSDK.fetchWallet();
+
 walletData.pick(
   onData: (SmartWallet smartWallet) async {
     print('Smart wallet address ${smartWallet.smartWalletAddress}');
@@ -81,25 +93,34 @@ walletData.pick(
     print('Failed to fetch wallet.');
     print('Trying to create...');
 
-    // Create Wallet subscriptions
-    fuseWalletSDK.on('smartWalletCreationStarted', (eventData) {
-      print('Started ${eventData.toString()}');
-    });
-
-    fuseWalletSDK.on('transactionHash', (eventData) {
-      print('Generated tx hash ${eventData.toString()}');
-    });
-
-    fuseWalletSDK.on('smartWalletCreationSucceeded', (eventData) {
-      print('Succeeded ${eventData.toString()}');
-    });
-
-    fuseWalletSDK.on('smartWalletCreationFailed', (eventData) {
-      print('Failed ${eventData.toString()}');
-    });
-
-    // Create Wallet
-    await fuseWalletSDK.createWallet();
+    final exceptionOrStream = await fuseWalletSDK.createWallet();
+    if (exceptionOrStream.hasError) {
+      print(exceptionOrStream.error.toString());
+    } else if (exceptionOrStream.hasData) {
+      final smartWalletEventStream = exceptionOrStream.data!;
+      smartWalletEventStream.listen(
+        (SmartWalletEvent event) {
+	 switch (event.name) {
+	    case "smartWalletCreationStarted":
+	      print('smartWalletCreationStarted ${event.data.toString()}');
+	      break;
+	    case "transactionHash":
+	      print('transactionHash ${event.data.toString()}');
+	      break;
+	    case "smartWalletCreationSucceeded":
+	      print('smartWalletCreationSucceeded ${event.data.toString()}');
+	      break;
+	    case "smartWalletCreationFailed":
+	      print('smartWalletCreationFailed ${event.data.toString()}');
+	      break;
+	  }
+	},
+	onError: (error) {
+	  print('Error occurred: ${error.toString()}');
+	  exit(1);
+	},
+      );
+    }
   },
 );
 ```
@@ -121,30 +142,40 @@ final String toAddress = 'RECEIVER_ADDRESS'; // "0x..."
 final String amount = 'AMOUNT'; // "0.01"
 final String tokenAddress = 'TOKEN_ADDRESS'; // "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
 
-// Relay subscriptions
-fuseWalletSDK.on('transactionStarted', (eventData) {
-  print('Started ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionHash', (eventData) {
-  print('Generated tx hash ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionSucceeded', (eventData) {
-  print('Succeeded ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionFailed', (eventData) {
-  print('Failed ${eventData.toString()}');
-});
-
 // Sending a gasless transaction
-await fuseWalletSDK.transferToken(
+final exceptionOrStream = await fuseWalletSDK.transferToken(
   credentials,
   tokenAddress,
   toAddress,
   amount,
 );
+
+if (exceptionOrStream.hasError) {
+  print(exceptionOrStream.error.toString());
+} else {
+  final smartWalletEventStream = exceptionOrStream.data!;
+  smartWalletEventStream.listen(
+    (SmartWalletEvent event) {
+      switch (event.name) {
+        case 'transactionStarted':
+          print('transactionStarted ${event.data.toString()}');
+          break;
+        case 'transactionHash':
+          print('transactionHash ${event.data.toString()}');
+          break;
+        case 'transactionSucceeded':
+          print('transactionSucceeded ${event.data.toString()}');
+          break;
+        case 'transactionFailed':
+          print('transactionFailed ${event.data.toString()}');
+          break;
+      }
+    },
+    onError: (error) {
+      print('Error occurred: ${error.toString()}');
+    },
+  );
+}
 ```
 
 ### Transfer NFT
@@ -160,39 +191,47 @@ To transfer an ERC721 (NFT) asset with a relay, use the `transferNFT` method. Th
 To ensure your transfer request is successful, you should subscribe to the transactionStarted, transactionHash, transactionSucceeded, and transactionFailed events of the FuseWalletSDK instance. This will allow you to monitor the transaction as it progresses through the network and handle any errors that may occur.
 
 ```dart
-final String toAddress = 'RECEIVER_ADDRESS';
-final String nftContractAddress = 'NFT_CONTRACT_ADDRESS';
-final num tokenId = "TOKEN_ID";
-
-// Relay subscriptions
-fuseWalletSDK.on('transactionStarted', (eventData) {
-  print('Started ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionHash', (eventData) {
-  print('Generated tx hash ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionSucceeded', (eventData) {
-  print('Succeeded ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionFailed', (eventData) {
-  print('Failed ${eventData.toString()}');
-});
-
 // Sending a gasless transaction
-await fuseWalletSDK.transferNFT(
+final exceptionOrStream = await fuseWalletSDK.transferNft(
   credentials,
   nftContractAddress,
-  toAddress,
+  receiverAddress,
   tokenId,
 );
+
+if (exceptionOrStream.hasError) {
+  print(exceptionOrStream.error.toString());
+} else {
+  final smartWalletEventStream = exceptionOrStream.data!;
+
+  smartWalletEventStream.listen(
+    (SmartWalletEvent event) {
+      switch (event.name) {
+        case "transactionStarted":
+          print('transactionStarted ${event.data.toString()}');
+          break;
+        case "transactionHash":
+          print('transactionHash ${event.data.toString()}');
+          break;
+        case "transactionSucceeded":
+          print('transactionSucceeded ${event.data.toString()}');
+          break;
+        case "transactionFailed":
+          print('transactionFailed ${event.data.toString()}');
+          exit(1);
+      }
+    },
+    onError: (error) {
+      print('Error occurred: ${error.toString()}');
+      exit(1);
+    },
+  );
+}
 ```
 
 ### Swap tokens
 
-To exchange one token for another, use the `swapTokens` method. This method swaps the token with the contract address specified in the `currencyIn` parameter for the token with the contract address specified in the `currencyOut` parameter at the current market price.&#x20;
+To exchange one token for another, use the `swapTokens` method. This method swaps the token with the contract address specified in the `currencyIn` parameter for the token with the contract address specified in the `currencyOut` parameter at the current market price.
 
 Additionally, this method relays the transaction and covers the gas fees for the user, so they don't need to worry about those fees.
 
@@ -208,23 +247,6 @@ The method requires a `TradeRequestBody` parameter with the following properties
 To ensure your transfer request is successful, subscribe to the transactionStarted, transactionHash, transactionSucceeded, and transactionFailed events of the FuseWalletSDK instance. This will allow you to monitor the transaction as it progresses through the network and handle any errors that may occur.
 
 ```dart
-// Relay subscriptions
-fuseWalletSDK.on('transactionStarted', (eventData) {
-  print('Started ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionHash', (eventData) {
-  print('tx hash ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionSucceeded', (eventData) {
-  print('Succeeded ${eventData.toString()}');
-});
-
-fuseWalletSDK.on('transactionFailed', (eventData) {
-  print('Failed ${eventData.toString()}');
-});
-
 final TradeRequestBody tradeRequestBody = TradeRequestBody(
   currencyIn: 'CURRENCY_IN',
   currencyOut: 'CURRENCY_OUT',
@@ -233,10 +255,39 @@ final TradeRequestBody tradeRequestBody = TradeRequestBody(
 );
 
 // Sending a gasless transaction
-await fuseWalletSDK.swapTokens(
+final exceptionOrStream = await fuseWalletSDK.swapTokens(
   credentials,
   tradeRequestBody,
 );
+
+if (exceptionOrStream.hasError) {
+  print(exceptionOrStream.error.toString());
+} else {
+  final smartWalletEventStream = exceptionOrStream.data!;
+
+  smartWalletEventStream.listen(
+    (SmartWalletEvent event) {
+      switch (event.name) {
+        case "transactionStarted":
+          print('transactionStarted ${event.data.toString()}');
+          break;
+        case "transactionHash":
+          print('transactionHash ${event.data.toString()}');
+          break;
+        case "transactionSucceeded":
+          print('transactionSucceeded ${event.data.toString()}');
+          break;
+        case "transactionFailed":
+          print('transactionFailed ${event.data.toString()}');
+          exit(1);
+      }
+    },
+    onError: (error) {
+      print('Error occurred: ${error.toString()}');
+      exit(1);
+    },
+  );
+}
 ```
 
 ## Data Features
@@ -247,7 +298,7 @@ The `getTokenList` function allows you to get the list of tokens owned by a spec
 
 ```dart
 final String address = 'ADDRESS';
-final tokenListData = await fuseWalletSDK.explorerSection.getTokenList(
+final tokenListData = await fuseWalletSDK.explorerModule.getTokenList(
   address,
 );
 tokenListData.pick(
@@ -266,7 +317,7 @@ The `getTokenDetails` function allows you to retrieve detailed information about
 
 ```dart
 final String tokenAddress = 'TOKEN_ADDRESS';
-final tokenDetailsData = await smartWalletsSDK.explorerSection.getTokenDetails(
+final tokenDetailsData = await smartWalletsSDK.explorerModule.getTokenDetails(
   tokenAddress,
 );
 
@@ -287,7 +338,7 @@ The `getTokenBalance` function allows you to retrieve the balance of a specific 
 ```dart
 final String tokenAddress = 'TOKEN_ADDRESS';
 final String smartWalletAddress = 'WALLET_ADDRESS';
-final tokenBalanceData = await smartWalletsSDK.explorerSection.getTokenBalance(
+final tokenBalanceData = await smartWalletsSDK.explorerModule.getTokenBalance(
   tokenAddress,
   smartWalletAddress,
 );
@@ -307,7 +358,7 @@ tokenBalanceData.pick(
 ### Get staking options
 
 ```dart
-final stakingOptionsData = await smartWalletsSDK.stakingSection.getStakingOptions();
+final stakingOptionsData = await smartWalletsSDK.stakingModule.getStakingOptions();
 stakingOptionsData.pick(
   onData: (List<StakingOption> data) {
     // Do you magic here
@@ -321,73 +372,96 @@ stakingOptionsData.pick(
 ### Stake
 
 ```dart
-// Relay subscriptions
-smartWalletsSDK.on('transactionStarted', (eventData) {
-  print('Started ${eventData.toString()}');
-});
-
-smartWalletsSDK.on('transactionHash', (eventData) {
-  print('tx hash ${eventData.toString()}');
-});
-
-smartWalletsSDK.on('transactionSucceeded', (eventData) {
-  print('Succeeded ${eventData.toString()}');
-});
-
-smartWalletsSDK.on('transactionFailed', (eventData) {
-  print('Failed ${eventData.toString()}');
-});
-
 final StakeRequestBody stakeRequestBody = StakeRequestBody(
   accountAddress: 'YOUR_SMART_WALLET_ADDRESS',
   tokenAmount: 'AMOUNT', // "0.01"
   tokenAddress: 'TOKEN_ADDRESS', // "0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4"
 );
 // Sending a gasless transaction
-await smartWalletsSDK.stakeToken(
+final exceptionOrStream = await smartWalletsSDK.stakeToken(
   credentials,
   stakeRequestBody,
 );
+
+if (exceptionOrStream.hasError) {
+  print(exceptionOrStream.error.toString());
+} else {
+  final smartWalletEventStream = exceptionOrStream.data!;
+
+  smartWalletEventStream.listen(
+    (SmartWalletEvent event) {
+      switch (event.name) {
+        case "transactionStarted":
+          print('transactionStarted ${event.data.toString()}');
+          break;
+        case "transactionHash":
+          print('transactionHash ${event.data.toString()}');
+          break;
+        case "transactionSucceeded":
+          print('transactionSucceeded ${event.data.toString()}');
+          break;
+        case "transactionFailed":
+          print('transactionFailed ${event.data.toString()}');
+          exit(1);
+      }
+    },
+    onError: (error) {
+      print('Error occurred: ${error.toString()}');
+      exit(1);
+    },
+  );
+}
 ```
 
 ### Unstake
 
-```dart
-// Relay subscriptions
-smartWalletsSDK.on('transactionStarted', (eventData) {
-  print('Started ${eventData.toString()}');
-});
-
-smartWalletsSDK.on('transactionHash', (eventData) {
-  print('tx hash ${eventData.toString()}');
-});
-
-smartWalletsSDK.on('transactionSucceeded', (eventData) {
-  print('Succeeded ${eventData.toString()}');
-});
-
-smartWalletsSDK.on('transactionFailed', (eventData) {
-  print('Failed ${eventData.toString()}');
-});
-
-final UnstakeRequestBody unstakeRequestBody = UnstakeRequestBody(
+<pre class="language-dart"><code class="lang-dart">final UnstakeRequestBody unstakeRequestBody = UnstakeRequestBody(
   accountAddress: 'YOUR_SMART_WALLET_ADDRESS',
   tokenAmount: 'AMOUNT', // "0.01"
   tokenAddress: 'TOKEN_ADDRESS', // "0x34Ef2Cc892a88415e9f02b91BfA9c91fC0bE6bD4"
 );
 
 // Sending a gasless transaction
-await smartWalletsSDK.unstakeToken(
-  credentials,
+<strong>final exceptionOrStream = await smartWalletsSDK.unstakeToken(
+</strong>  credentials,
   unstakeRequestBody,
 );
-```
+
+if (exceptionOrStream.hasError) {
+  print(exceptionOrStream.error.toString());
+} else {
+  final smartWalletEventStream = exceptionOrStream.data!;
+
+  smartWalletEventStream.listen(
+    (SmartWalletEvent event) {
+      switch (event.name) {
+        case "transactionStarted":
+          print('transactionStarted ${event.data.toString()}');
+          break;
+        case "transactionHash":
+          print('transactionHash ${event.data.toString()}');
+          break;
+        case "transactionSucceeded":
+          print('transactionSucceeded ${event.data.toString()}');
+          break;
+        case "transactionFailed":
+          print('transactionFailed ${event.data.toString()}');
+          exit(1);
+      }
+    },
+    onError: (error) {
+      print('Error occurred: ${error.toString()}');
+      exit(1);
+    },
+  );
+}
+</code></pre>
 
 ### Get staked tokens
 
 ```dart
 final smartWalletAddress = 'YOUR_SMART_WALLET_ADDRESS';
-final stakedTokensData = await smartWalletsSDK.stakingSection.getStakedTokens(smartWalletAddress);
+final stakedTokensData = await smartWalletsSDK.stakingModule.getStakedTokens(smartWalletAddress);
 
 stakedTokensData.pick(
   onData: (StakedTokenResponse data) {
@@ -405,7 +479,7 @@ stakedTokensData.pick(
 
 ```dart
 final tokenAddress = 'TOKEN_ADDRESS';
-final priceData = await smartWalletsSDK.tradeSection.price(tokenAddress);
+final priceData = await smartWalletsSDK.tradeModule.price(tokenAddress);
 priceData.pick(
   onData: (String tokenPrice) {
     // Do you magic here
@@ -420,7 +494,7 @@ priceData.pick(
 
 ```dart
 final tokenAddress = 'TOKEN_ADDRESS';
-final priceChangeData = await smartWalletsSDK.tradeSection.priceChange(tokenAddress);
+final priceChangeData = await smartWalletsSDK.tradeModule.priceChange(tokenAddress);
 priceChangeData.pick(
   onData: (String priceInfo) {
     // Do you magic here
@@ -435,7 +509,7 @@ priceChangeData.pick(
 
 ```dart
 final tokenAddress = 'TOKEN_ADDRESS';
-final intervalData = await smartWalletsSDK.tradeSection.interval(tokenAddress, TimeFrame.day);
+final intervalData = await smartWalletsSDK.tradeModule.interval(tokenAddress, TimeFrame.day);
 intervalData.pick(
   onData: (List<IntervalStats> stats) {
     // Do you magic here
@@ -449,7 +523,7 @@ intervalData.pick(
 ### Get the list of supported tokens
 
 ```dart
-final tokensData = await smartWalletsSDK.tradeSection.fetchTokens();
+final tokensData = await smartWalletsSDK.tradeModule.fetchTokens();
 tokensData.pick(
   onData: (List<TokenDetails> tokens) {
     // Do you magic here

@@ -4,4 +4,4 @@ If you have any questions, feedback, or need assistance with the Fuse Wallet SDK
 
 * Join our Telegram community:[https://t.me/fuseio/163566](https://t.me/fuseio/163566)
 * Contact us via email: [**support@fuse.io**](mailto:support@fuse.io)
-* Visit our website for additional resources: [https://fuse.io/sdk](https://fuse.io/sdk)&#x20;
+* Visit our website for additional resources: [https://fuse.io/sdk](https://fuse.io/sdk)

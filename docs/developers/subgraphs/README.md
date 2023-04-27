@@ -11,7 +11,7 @@ The Graph is a decentralized protocol for indexing and querying data from blockc
 ## Popular Subgraphs
 
 * [fuse-nft](https://thegraph.com/hosted-service/subgraph/fuseio/fuse-nft) - all NFTs on the Fuse Network
-* [fuse-blocks](https://thegraph.com/hosted-service/subgraph/fuseio/fuse-blocks) - blocks details of the network&#x20;
+* [fuse-blocks](https://thegraph.com/hosted-service/subgraph/fuseio/fuse-blocks) - blocks details of the network
 * [voltage-dex](https://thegraph.com/hosted-service/subgraph/voltfinance/voltage-exchange-v2) - Voltage DEX subgraph for on-chain trading information
 * [fuse-consensus](https://thegraph.com/explorer/subgraph/fuseio/fuse-consensus)
 * [fuse-ethereum-amb](https://thegraph.com/hosted-service/subgraph/fuseio/fuse-to-ethereum-amb) - subgraph for Fuse -> Ethereum AMB bridge

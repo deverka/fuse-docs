@@ -1,6 +1,6 @@
 # Admin API
 
-Admin API lets you build applications on Web3 that feel like traditional Web2 applications without any friction related to Web3 to the users. It is exactly like integrating Stripe or Plaid into your app, but everything behind the scenes is happening on the Fuse blockchain instead of the traditional legacy payment infrastructures.&#x20;
+Admin API lets you build applications on Web3 that feel like traditional Web2 applications without any friction related to Web3 to the users. It is exactly like integrating Stripe or Plaid into your app, but everything behind the scenes is happening on the Fuse blockchain instead of the traditional legacy payment infrastructures.
 
 For this reason, unlike traditional payment platforms, Fuse is borderless, extremely low-cost, and open to everyone.
 
@@ -18,7 +18,7 @@ With the Admin Tokens API, you can create and manage ERC20 tokens on the Fuse bl
 
 You might be wondering how Admin API works and how it is secure. That's a great question and a very important one!
 
-When you create a project on the Fuse dashboard and a Secret API Key associated with it, a backend account on the Fuse blockchain is automatically created. This account's address also appears to you on your project's details page.&#x20;
+When you create a project on the Fuse dashboard and a Secret API Key associated with it, a backend account on the Fuse blockchain is automatically created. This account's address also appears to you on your project's details page.
 
 The private key to this account is encrypted and stored in a secure secrets manager. Since we do not store your secret key, only you can access your backend account.
 
@@ -28,17 +28,17 @@ Once you have a secured backend account, all the transactions through the Admin 
 
 Before working with Admin API, if you haven't done so, please follow the guide [Getting Started](../fuse-sdk/getting-started.md).
 
-> #### 📘For all the Admin APIs you will need to have both your Public and Secret API Keys.
+> **📘For all the Admin APIs you will need to have both your Public and Secret API Keys.**
 
 #### Ready to start!
 
 Once you have your project set and access your Public and Secret API keys, you can start working with the Admin API.
 
-> #### 📘Remember
+> **📘Remember**
 >
 > For all Admin API requests, you will need to add your Public API Key to the request query params under the key `apiKey` and your Secret API Key in the request headers under the key `API-SECRET`.
 
-> #### 🚧Attention!
+> **🚧Attention!**
 >
 > You should **always** use Admin API only on your server-side applications and not expose your Secret API Key in your client-side applications.
 
